@@ -1,0 +1,13 @@
+aws_region        = "us-east-1"
+
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+availability_zone  = "us-east-1a"
+vpc_name           = "dev-vpc"
+
+sg_name           = "dev-web-sg"
+
+ami               = "ami-0b6c6ebed2801a5cb"   # Replace with valid Ubuntu/Amazon Linux AMI
+instance_type     = "t2.micro"
+key_name          = "automation-key" # Must match AWS key pair
+instance_name     = "dev-web-ec2"

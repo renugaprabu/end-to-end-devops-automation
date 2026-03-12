@@ -1,0 +1,18 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Keys
+*.pem
+
+# Mac files
+.DS_Store
+
+# Ansible
+*.retry
+
+# Terraform directories
+.terraform/
+*.tfstate.backup

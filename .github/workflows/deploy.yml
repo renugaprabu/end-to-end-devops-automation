@@ -12,40 +12,36 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # Updated from v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4  # Updated from v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3  # Updated from v2
         with:
           terraform_version: 1.5.0
 
       - name: Terraform Init
-        run: |
-          cd environments/dev
-          terraform init
+        run: cd environments/dev && terraform init
 
       - name: Terraform Plan
-        run: |
-          cd environments/dev
-          terraform plan -no-color
+        run: cd environments/dev && terraform plan -no-color
 
       - name: Terraform Apply
-        run: |
-          cd environments/dev
-          terraform apply -auto-approve -no-color
+        run: cd environments/dev && terraform apply -auto-approve -no-color
 
       - name: Get EC2 Public IP
         id: get_ip
         run: |
           cd environments/dev
-          echo "EC2_IP=$(terraform output -raw ec2_public_ip)" >> $GITHUB_ENV
+          EC2_IP=$(terraform output -raw ec2_public_ip)
+          echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
+          echo "ec2_ip=$EC2_IP" >> $GITHUB_OUTPUT  # Fixed deprecated set-output
 
       - name: Setup SSH key
         run: |
@@ -71,11 +67,10 @@ jobs:
           echo "${{ env.EC2_IP }} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa" >> environments/dev/inventory
 
       - name: Run Ansible Playbook
-        run: |
-          ansible-playbook -i environments/dev/inventory ansible/playbooks.yml
+        run: ansible-playbook -i environments/dev/inventory ansible/playbooks.yml
 
       - name: Deployment Complete
         run: |
-          echo " Infrastructure and application deployed successfully!"
-          echo " Access your application at:"
+          echo "✅ Infrastructure and application deployed successfully!"
+          echo "🌐 Access your application at:"
           echo "http://${{ env.EC2_IP }}"

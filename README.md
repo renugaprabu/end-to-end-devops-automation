@@ -21,3 +21,4 @@ GitHub Actions automatically deploys infrastructure and application on every pus
 
 ## 📁 Project Structure
 
+# CI/CD pipeline active

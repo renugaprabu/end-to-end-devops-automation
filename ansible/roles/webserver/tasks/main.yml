@@ -16,7 +16,7 @@
 
 - name: Deploy web app content
   template:
-    src:  app/simple-web-app/templates/index.html
+    src:  "../../../../app/simple-web-app/templates/index.html"
     dest: /var/www/html/index.html
     owner: www-data
     group: www-data

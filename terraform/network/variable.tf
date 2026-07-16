@@ -3,8 +3,8 @@ variable "vpc_cidr" {
   type        = string
 }
 
-variable "public_subnet_cidr" {
-  description = "Public subnet CIDR block"
+variable "public_subnet_1_cidr" {
+  description = "second Public subnet CIDR block"
   type        = string
 }
 
@@ -13,8 +13,8 @@ variable "public_subnet_2_cidr" {
   type        = string
 }
 
-variable "availability_zone" {
-  description = "Availability Zone for subnet"
+variable "availability_zone_1" {
+  description = "Availability Zone for first subnet"
   type        = string
 }
 

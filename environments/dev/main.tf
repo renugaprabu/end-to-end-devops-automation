@@ -2,7 +2,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-# 1️⃣ Network Module
+# Network Module
 module "network" {
   source             = "../../terraform/network"
   vpc_cidr           = var.vpc_cidr
@@ -13,14 +13,15 @@ module "network" {
  
 }
 
-# 2️⃣ Security Module
+# Security Module
 module "security" {
   source  = "../../terraform/security"
   vpc_id  = module.network.vpc_id
   sg_name = var.sg_name
+  alb_sg_id = module.alb.alb_sg_id
 }
 
-# 3️⃣ Compute Module
+# Compute Module
 module "compute" {
   source         = "../../terraform/compute"
   ami            = var.ami
@@ -29,6 +30,15 @@ module "compute" {
   sg_id          = module.security.web_sg_id
   key_name       = var.key_name
   instance_name  = var.instance_name
+}
+
+# ALB Module
+module "alb" {
+  source              = "../../terraform/alb"
+  name                = var.instance_name
+  vpc_id              = module.network.vpc_id
+  subnet_ids          = module.network.public_subnet_ids
+  target_instance_id  = module.compute.instance_id
 }
 
 # Output EC2 Public IP

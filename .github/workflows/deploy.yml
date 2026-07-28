@@ -2,7 +2,7 @@ name: Deploy DevOps Infrastructure
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -28,9 +28,6 @@ jobs:
 
       - name: Terraform Init
         run: cd environments/dev && terraform init
-
-      - name: Terraform Plan
-        run: cd environments/dev && terraform plan -no-color
 
       - name: Terraform Apply
         run: cd environments/dev && terraform apply -auto-approve -no-color

@@ -41,7 +41,20 @@ module "alb" {
   target_instance_id  = module.compute.instance_id
 }
 
-# Output EC2 Public IP
+#  RDS Module
+module "rds" {
+  source      = "../../terraform/rds"
+  name        = var.instance_name
+  vpc_id      = module.network.vpc_id
+  subnet_ids  = module.network.public_subnet_ids
+  ec2_sg_id   = module.security.web_sg_id
+  engine      = var.db_engine
+  db_name     = var.db_name
+  db_username = var.db_username
+  db_password = var.db_password
+}
+
+# Output 
 output "ec2_public_ip" {
   value = module.compute.public_ip
 }
@@ -49,3 +62,8 @@ output "ec2_public_ip" {
 output "alb_dns_name" {
   value = module.alb.alb_dns_name
 }
+
+output "rds_endpoint" {
+  value = module.rds.rds_endpoint
+}
+

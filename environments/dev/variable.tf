@@ -10,3 +10,11 @@ variable "key_name" {}
 variable "instance_name" {}
 variable "public_subnet_2_cidr" {}
 variable "availability_zone_2" {}
+variable "db_engine" {
+  default = "mysql"
+}
+variable "db_name" {}
+variable "db_username" {}
+variable "db_password" {
+  sensitive = true
+}

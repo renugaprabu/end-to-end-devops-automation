@@ -10,6 +10,10 @@ jobs:
     name: Deploy to AWS
     runs-on: ubuntu-latest
     
+    env:
+      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4  # Updated from v3
@@ -28,6 +32,12 @@ jobs:
 
       - name: Terraform Init
         run: cd environments/dev && terraform init
+      
+      - name: Terraform Validate
+        run: cd environments/dev && terraform validate
+
+      - name: Terraform Plan
+        run: cd environments/dev && terraform plan -no-color
 
       - name: Terraform Apply
         run: cd environments/dev && terraform apply -auto-approve -no-color
@@ -68,6 +78,6 @@ jobs:
 
       - name: Deployment Complete
         run: |
-          echo "✅ Infrastructure and application deployed successfully!"
-          echo "🌐 Access your application at:"
+          echo " Infrastructure and application deployed successfully!"
+          echo " Access your application at:"
           echo "http://${{ env.EC2_IP }}"
